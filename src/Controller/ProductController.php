@@ -78,4 +78,12 @@ class ProductController extends AbstractController
 
         return $this->redirectToRoute('app_product_index', [], Response::HTTP_SEE_OTHER);
     }
+
+    #[Route('/pos', name: 'pos', methods: ['GET'])]
+    public function pos(Request $request, Product $product, EntityManagerInterface $entityManager): Response
+    {
+        return $this->render('product/pos.html.twig', [
+            'products' => $product
+        ]);
+    }
 }
