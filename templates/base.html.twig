@@ -21,14 +21,18 @@
                     <a class="nav-link" href="{{ path('home') }}">Home</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="{{ path('product_index') }}">Products</a>
+                    <a class="nav-link" href="{{ path('app_product_index') }}">Products</a>
                 </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ path('pos') }}">POS</a>
+                </li>
+
                 <!-- Add more li elements as needed -->
             </ul>
         </div>
     </div>
 
-    <div class="container mt-4">
+    <div class="container-fluid  mt-4">
         {% block body %}{% endblock %}
     </div>
 
