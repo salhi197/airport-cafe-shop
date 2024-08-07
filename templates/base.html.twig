@@ -1,45 +1,49 @@
+{# templates/base.html.twig #}
+
 <!DOCTYPE html>
 <html>
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <title>{% block title %}My Symfony App{% endblock %}</title>
+    <!-- include your stylesheets and other head content -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-    <link rel="stylesheet" href="{{ asset('css/app.css') }}">
-    {% block stylesheets %}{% endblock %}
+    <style>
+        /* Optional custom styles */
+        .navbar {
+            background-color: #343a40; /* dark background color */
+        }
+        .navbar-brand {
+            color: #ffffff; /* white color for logo text */
+            font-size: 1.5rem; /* adjust font size */
+            font-weight: bold; /* make it bold */
+        }
+        .navbar-nav .nav-link {
+            color: #ffffff; /* white color for nav links */
+        }
+    </style>
 </head>
 <body>
-    <div class="top-bar bg-light py-2">
-        <div class="container d-flex justify-content-between align-items-center">
-            <div class="logo">
-                <a href="{{ path('home') }}">
-                    <img src="{{ asset('images/logo.png') }}" alt="Logo" style="height: 40px;">
-                </a>
+    <div id="app">
+        <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+            <router-link to="/" class="navbar-brand">Your Logo</router-link> <!-- Replace with your logo -->
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ml-auto">
+                    <li class="nav-item">
+                        <router-link to="/pos" class="nav-link">Point of Sale</router-link>
+                    </li>
+                    <!-- Add more navigation items as needed -->
+                </ul>
             </div>
-            <ul class="nav">
-                <li class="nav-item">
-                    <a class="nav-link" href="{{ path('home') }}">Home</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="{{ path('app_product_index') }}">Products</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="{{ path('pos') }}">POS</a>
-                </li>
+        </nav>
+        
+        <router-view></router-view> <!-- This will render the matched component for the current route -->
 
-                <!-- Add more li elements as needed -->
-            </ul>
-        </div>
     </div>
 
-    <div class="container-fluid  mt-4">
-        {% block body %}{% endblock %}
-    </div>
-
-    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-    <script src="{{ asset('js/app.js') }}"></script>
-    {% block javascripts %}{% endblock %}
+    <!-- include your scripts at the end of the body -->
+    {% block javascripts %}
+        {{ encore_entry_script_tags('app') }}
+    {% endblock %}
 </body>
 </html>
