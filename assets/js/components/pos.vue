@@ -9,7 +9,7 @@
                 <div class="card-body">
                     <h5 class="card-title">{{ product.name }}</h5>
                     <p class="card-text">{{ product.description }}</p>
-                    <p class="card-text">Price: {{ product.price }}</p>
+                    <p class="card-text">Price: {{ product.price.toFixed(2) }}</p>
                     <button
                         class="btn btn-primary"
                         @click="addToCart(product)"
@@ -28,13 +28,27 @@
                 </div>
             </div>
         </div>
-        <button
-            class="btn btn-success mt-4"
-            @click="submitOrder"
-            :disabled="cart.length === 0"
-        >
-            Submit Order
-        </button>
+
+        <div class="mt-4">
+            <div>
+                <label for="discount">Discount (%)</label>
+                <input
+                    id="discount"
+                    type="number"
+                    v-model.number="discount"
+                    min="0"
+                    max="100"
+                />
+            </div>
+            <p>Total Amount: {{ totalAmount.toFixed(2) }}</p>
+            <button
+                class="btn btn-success mt-2"
+                @click="submitOrder"
+                :disabled="cart.length === 0"
+            >
+                Submit Order
+            </button>
+        </div>
     </div>
 </template>
 
@@ -44,6 +58,7 @@ export default {
         return {
             products: [],
             cart: [], // Array to store products with quantities
+            discount: 0, // Discount percentage
             loading: true,
             error: null
         };
@@ -96,17 +111,30 @@ export default {
                 headers: {
                     'Content-Type': 'application/json'
                 },
-                body: JSON.stringify({ products: this.cart })
+                body: JSON.stringify({
+                    products: this.cart,
+                    discount: this.discount
+                })
             })
                 .then(response => response.json())
                 .then(data => {
                     console.log('Order submitted:', data);
                     // Handle successful submission (e.g., redirect, show message)
                     this.cart = []; // Clear cart
+                    this.discount = 0; // Reset discount
                 })
                 .catch(error => {
                     console.error('Error submitting order:', error);
                 });
+        }
+    },
+    computed: {
+        totalAmount() {
+            const subtotal = this.cart.reduce((sum, product) => {
+                return sum + (product.price * product.quantity);
+            }, 0);
+            const discountAmount = (this.discount / 100) * subtotal;
+            return subtotal - discountAmount;
         }
     }
 };
@@ -135,7 +163,12 @@ export default {
     opacity: 0.6;
 }
 
-.btn-success {
+.mt-4 {
     margin-top: 20px;
+}
+
+input[type="number"] {
+    width: 100px;
+    margin-left: 10px;
 }
 </style>
